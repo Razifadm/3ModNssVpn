@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Download controller
-wget -O /usr/lib/lua/luci/controller/ttl64.lua\
+wget -O /usr/lib/lua/luci/controller/ttl64.lua \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/lib/lua/luci/controller/ttl64.lua
 
 # Download view
@@ -12,5 +12,7 @@ https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/lib/lua/luci/view
 wget -O /usr/bin/modipv4.sh \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/bin/modipv4.sh
 
+# Bagi permission execute pada bin
+chmod +x /usr/bin/modipv4.sh
 
 echo "✅ 3Mod installed"
