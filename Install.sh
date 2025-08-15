@@ -13,4 +13,4 @@ wget -O /usr/bin/modipv4.sh \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/bin/modipv4.sh
 
 
-echo "✅ 3Mod installed 
+echo "✅ 3Mod installed"
