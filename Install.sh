@@ -16,3 +16,5 @@ https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/bin/modipv4.sh
 chmod +x /usr/bin/modipv4.sh
 
 echo "✅ 3Mod installed"
+# Padam skrip ini sendiri
+rm -f "$0"
