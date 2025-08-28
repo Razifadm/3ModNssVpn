@@ -13,7 +13,8 @@ mod() {
   uci set firewall.@defaults[0].flow_offloading_hw='0'    
   uci commit firewall >/dev/null 2>&1    
     
-  # Restart servis    
+  # Restart servis
+  /etc/init.d/qmodem_network restart >/dev/null 2>&1
   /etc/init.d/firewall restart >/dev/null 2>&1    
   /etc/init.d/network restart >/dev/null 2>&1    
     
@@ -35,7 +36,8 @@ nss() {
   uci set firewall.@defaults[0].flow_offloading_hw='1'    
   uci commit firewall >/dev/null 2>&1    
     
-  # Restart servis    
+  # Restart servis 
+  /etc/init.d/qmodem_network restart >/dev/null 2>&1
   /etc/init.d/firewall restart >/dev/null 2>&1    
   /etc/init.d/network restart >/dev/null 2>&1    
     
@@ -60,10 +62,10 @@ vpn() {
   uci set qmodem.'4_1'.pdp_type='ipv4'    
   uci commit qmodem    
     
-  # Restart servis    
+  # Restart servis
+  /etc/init.d/qmodem_network restart >/dev/null 2>&1
   /etc/init.d/firewall restart >/dev/null 2>&1    
-  /etc/init.d/network restart >/dev/null 2>&1    
-  # /etc/init.d/qmodem restart >/dev/null 2>&1  # uncomment kalau perlu    
+  /etc/init.d/network restart >/dev/null 2>&1      
     
   logger -t TTL64 "MODE: VPN (TTL active, Flow offloading enabled, PDP=ipv4)"    
 }    
