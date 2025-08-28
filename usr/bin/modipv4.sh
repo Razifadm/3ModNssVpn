@@ -17,6 +17,7 @@ mod() {
   uci set qmodem.'4_1'.pdp_type='ip'
   uci commit qmodem
   # Restart servis
+  /etc/init.d/qmodem_network restart >/dev/null 2>&1
   /etc/init.d/firewall restart >/dev/null 2>&1
   /etc/init.d/network restart >/dev/null 2>&1
 
@@ -41,6 +42,7 @@ nss() {
   uci commit qmodem
 
   # Restart servis
+  /etc/init.d/qmodem_network restart >/dev/null 2>&1
   /etc/init.d/firewall restart >/dev/null 2>&1
   /etc/init.d/network restart >/dev/null 2>&1
 
@@ -63,9 +65,9 @@ vpn() {
   uci commit qmodem
 
   # Restart servis
+  /etc/init.d/qmodem_network restart >/dev/null 2>&1
   /etc/init.d/firewall restart >/dev/null 2>&1
   /etc/init.d/network restart >/dev/null 2>&1
-  # /etc/init.d/qmodem restart >/dev/null 2>&1  # uncomment kalau perlu
 
   logger -t TTL64 "MODE: VPN (TTL active, Flow offloading enabled, PDP=ipv4)"
 }
