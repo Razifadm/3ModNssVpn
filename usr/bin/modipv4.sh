@@ -20,7 +20,7 @@ mod() {
   logger -t TTL64 "MODE: MOD (TTL active, Flow offloading disabled)"    
     
 # Set PDP type ke ipv4 dalam section modem-device '4_1'    
-  uci set qmodem.'4_1'.pdp_type='ipv4'    
+  uci set qmodem.'4_1'.pdp_type='ip'    
   uci commit qmodem    
     
 }    
@@ -57,7 +57,7 @@ vpn() {
   uci commit firewall >/dev/null 2>&1    
     
   # Set PDP type ke ipv4 dalam section modem-device '4_1'    
-  uci set qmodem.'4_1'.pdp_type='ipv4'    
+  uci set qmodem.'4_1'.pdp_type='ip'    
   uci commit qmodem    
     
   # Restart servis    
