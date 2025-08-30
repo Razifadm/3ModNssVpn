@@ -1,0 +1,69 @@
+#!/bin/sh
+
+DEVICE="/dev/ttyUSB2"
+
+# === Fungsi hantar AT command ===
+send_at() {
+    CMD="$1"
+    sms_tool -d "$DEVICE" at "$CMD" 2>/dev/null
+}
+
+# === Dapatkan suhu ===
+TEMP_CMD="at+qtemp"
+TEMP_OUT=$(send_at "$TEMP_CMD")
+
+# === Dapatkan voltan ===
+VOLT_CMD="at+cbc"
+VOLT_OUT=$(send_at "$VOLT_CMD")
+
+# === Dapatkan own number (AT+CNUM) ===
+NUM_CMD="at+cnum"
+NUM_OUT=$(send_at "$NUM_CMD")
+
+# === Fungsi AT command band lock ===
+case "$1" in
+  AUTOBAND)
+    send_at 'AT+QNWPREFCFG="mode_pref",AUTO'
+    ;;
+  LOCK4G)
+    send_at 'AT+QNWPREFCFG="mode_pref",LTE'
+    ;;
+  LOCK4G5G)
+    send_at 'AT+QNWPREFCFG="mode_pref",NR5G:LTE'
+    ;;
+  LOCK5GSA)
+    send_at 'AT+QNWPREFCFG="mode_pref",NR5G'
+    ;;
+esac
+
+# --- Proses suhu ---
+if [ -z "$TEMP_OUT" ]; then
+  TEMP="N/A"
+else
+  TEMP=$(echo "$TEMP_OUT" | grep -oE ',"[0-9]+"' | tr -d '",' | sort -n | tail -n1)
+  [ -n "$TEMP" ] && TEMP=$(printf "%.1f" "$TEMP") || TEMP="N/A"
+fi
+
+# --- Proses voltan ---
+if [ -z "$VOLT_OUT" ]; then
+  VOLT="N/A"
+else
+  VOLT=$(echo "$VOLT_OUT" | grep -oE '[0-9]+,[0-9]+,[0-9]+' | cut -d',' -f3)
+  if [ -n "$VOLT" ]; then
+    VOLT=$(awk "BEGIN {printf \"%.3f\", $VOLT / 1000}")
+  else
+    VOLT="N/A"
+  fi
+fi
+
+# --- Proses own number ---
+if [ -z "$NUM_OUT" ]; then
+  OWN_NUM="N/A"
+else
+  # Format biasa: +CNUM: "Voice","60123456789",129
+  OWN_NUM=$(echo "$NUM_OUT" | awk -F',' '{gsub(/"/,""); if ($2 ~ /^[0-9+]+$/) print $2}')
+  [ -z "$OWN_NUM" ] && OWN_NUM="N/A"
+fi
+
+# === Output akhir ===
+echo "Temp: $TEMP°C / Voltage: $VOLT V / Number: $OWN_NUM"
