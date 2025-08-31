@@ -4,8 +4,27 @@ function index()
     entry({"admin", "status", "ttl64"}, call("action_ttl64"), _("MOD/Band"), 100)
 end
 
+-- Fungsi untuk tentukan mode semasa
+function get_current_mode()
+    local sys = require "luci.sys"
+    local pdp = sys.exec("uci get qmodem.4_1.pdp_type 2>/dev/null"):gsub("\n", "")
+    local flow = sys.exec("uci get firewall.@defaults[0].flow_offloading 2>/dev/null"):gsub("\n", "")
+
+    if pdp == "ip" and flow == "0" then
+        return "mod"
+    elseif pdp == "ipv4v6" and flow == "0" then
+        return "nss"
+    elseif pdp == "ipv4v6" and flow == "1" then
+        return "flow"
+    elseif pdp == "ip" and flow == "1" then
+        return "vpn"
+    else
+        return "unknown"
+    end
+end
+
+-- Fungsi utama
 function action_ttl64()
-    local uci = require "luci.model.uci".cursor()
     local sys = require "luci.sys"
     local http = require "luci.http"
     local tpl = require "luci.template"
@@ -19,6 +38,9 @@ function action_ttl64()
     elseif action == "nss" then
         sys.call("/usr/bin/modipv4.sh nss &")
         msg = "NSS Mode applied."
+    elseif action == "flow" then
+        sys.call("/usr/bin/modipv4.sh flow &")
+        msg = "TurboAcc Mode applied."
     elseif action == "vpn" then
         sys.call("/usr/bin/modipv4.sh vpn &")
         msg = "VPN Mode applied."
@@ -36,5 +58,10 @@ function action_ttl64()
         msg = "NR5G-SA Lock applied."
     end
 
-    tpl.render("admin_status/ttl64", {applied = msg})
+    local current_mode = get_current_mode()
+
+    tpl.render("admin_status/ttl64", {
+        applied = msg,
+        current_mode = current_mode
+    })
 end
