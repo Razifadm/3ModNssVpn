@@ -13,7 +13,7 @@ wget -O /usr/bin/modipv4.sh \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/RND/usr/bin/modipv4.sh
 
 # Download bin meodemtemp
-wget -O /usr/bin/modemtemp\
+wget -O /usr/bin/modemtemp \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/RND/usr/bin/modemtemp
 
 # Bagi permission execute pada bin
