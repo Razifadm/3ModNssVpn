@@ -1,4 +1,4 @@
-This project means to simply tap then have as follows thats it.
+This project means to simply tap then have as follows thats it (firewall3)
 
 custom mod 
 ```
@@ -9,13 +9,13 @@ contain 1 - Mod Vpn , Fixed ttl64, offload and APN-ipv4 only
 
 How To Install
 ```
-wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/Install.sh && chmod +x /tmp/Install.sh && sh /tmp/Install.sh
+wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/Install.sh && chmod +x /tmp/Install.sh && sh /tmp/Install.sh
 ```
 
 
 How To Remove/Uninstall
 ```
-wget -O /tmp/Uninstall.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/Uninstall.sh && chmod +x /tmp/Uninstall.sh && sh /tmp/Uninstall.sh
+wget -O /tmp/Uninstall.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/Uninstall.sh && chmod +x /tmp/Uninstall.sh && sh /tmp/Uninstall.sh
 ```
 
 
