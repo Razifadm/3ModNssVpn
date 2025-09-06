@@ -13,8 +13,12 @@ wget -O /usr/bin/modipv4.sh \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/bin/modipv4.sh
 
 # Download bin meodemtemp
-wget -O /usr/bin/modemtemp\
+wget -O /usr/bin/modemtemp \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/bin/modemtemp
+
+# Download ttl64.nft
+wget -O /etc/nftables.d/ttl64.nft \
+https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/etc/nftables.d/ttl64.nft
 
 # Bagi permission execute pada bin
 chmod +x /usr/bin/modipv4.sh
