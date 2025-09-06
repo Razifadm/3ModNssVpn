@@ -15,7 +15,7 @@ wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/ma
 
 How To Remove/Uninstall
 ```
-wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/Uninstall.sh && chmod +x /tmp/Uninstall.sh && sh /tmp/Uninstall.sh
+wget -O /tmp/Uninstall.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/Uninstall.sh && chmod +x /tmp/Uninstall.sh && sh /tmp/Uninstall.sh
 ```
 
 
