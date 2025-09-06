@@ -12,12 +12,17 @@ https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/usr/lib/lua/luci/view/
 wget -O /usr/bin/modipv4.sh \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/usr/bin/modipv4.sh
 
+# Download bin modemtemp 
+wget -O /usr/bin/modemtemp \
+https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/usr/bin/modemtemp
+
 # Download firewall.user ttl fw3
-wget -O /etc/firewall.user \
-https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/etc/firewall.user
+#wget -O /etc/firewall.user \
+#https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/etc/firewall.user
 
 # Bagi permission execute pada bin
 chmod +x /usr/bin/modipv4.sh
+chmod +x /usr/bin/modemtemp
 
 echo "✅ 3Mod installed"
 # Padam skrip ini sendiri
