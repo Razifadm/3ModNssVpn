@@ -7,11 +7,14 @@ contain 2 - Mod no TTL64, enable hardware offload
 contain 1 - Mod Vpn , Fixed ttl64, offload and APN-ipv4 only
 ```
 
-How To Install
+How To Install (firewal 4/ nftables.d)
 ```
 wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/Install.sh && chmod +x /tmp/Install.sh && sh /tmp/Install.sh
 ```
 
+How To Install (firewal 3/ iptables)
+```
+wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/Install.sh && chmod +x /tmp/Install.sh && sh /tmp/Install.sh```
 
 How To Remove/Uninstall
 ```
