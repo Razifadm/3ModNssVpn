@@ -12,9 +12,14 @@ How To Install (firewal 4/ nftables.d)
 wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/Install.sh && chmod +x /tmp/Install.sh && sh /tmp/Install.sh
 ```
 
+
+
 How To Install (firewal 3/ iptables)
 ```
-wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/Install.sh && chmod +x /tmp/Install.sh && sh /tmp/Install.sh```
+wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/Install.sh && chmod +x /tmp/Install.sh && sh /tmp/Install.sh
+```
+
+
 
 How To Remove/Uninstall
 ```
