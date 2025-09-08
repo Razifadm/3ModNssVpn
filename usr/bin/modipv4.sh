@@ -1,7 +1,7 @@
 #!/bin/sh    
     
 TTL_FILE="/etc/firewall.user"    
-TTL_DISABLED="/etc/firewal.user.disable"    
+TTL_DISABLED="/etc/firewall.user.disable"    
 TTL_TABLE="firewall.user"
 INTERFACE="qmodem_4_1"
 
