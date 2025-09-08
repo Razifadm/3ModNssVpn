@@ -2,19 +2,19 @@
 
 # Download controller
 wget -O /usr/lib/lua/luci/controller/ttl64.lua \
-https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/usr/lib/lua/luci/controller/ttl64.lua
+https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Qwrt/usr/lib/lua/luci/controller/ttl64.lua
 
 # Download view
 wget -O /usr/lib/lua/luci/view/admin_status/ttl64.htm \
-https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/usr/lib/lua/luci/view/admin_status/ttl64.htm
+https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Qwrt/usr/lib/lua/luci/view/admin_status/ttl64.htm
 
 # Download bin modipv4.sh
 wget -O /usr/bin/modipv4.sh \
-https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/usr/bin/modipv4.sh
+https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Qwrt/usr/bin/modipv4.sh
 
 # Download bin modemtemp 
 wget -O /usr/bin/modemtemp \
-https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw3/usr/bin/modemtemp
+https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Qwrt/usr/bin/modemtemp
 
 # Download firewall.user ttl fw3
 #wget -O /etc/firewall.user \
