@@ -1,5 +1,9 @@
 This project means to simply tap then have as follows thats it.
 
+added ttl64.nft to main branch.
+this will pour sauces for mangling.
+usefull for data plan that need it.
+
 custom mod 
 ```
 contain 3- Mod fixed TTL64
