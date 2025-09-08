@@ -33,6 +33,14 @@ mod() {
   uci set qmodem.'4_1'.pdp_type='ip'
   uci commit qmodem
 
+  # Set turboacc config
+  uci set turboacc.config.sw_flow='1'
+  uci set turboacc.config.hw_flow='1'
+  uci set turboacc.config.sfe_flow='1'
+  uci set turboacc.config.fullcone_nat='2'
+  uci set turboacc.config.bbr_cca='1'
+  uci commit turboacc >/dev/null 2>&1
+
   logger -t TTL64 "MODE: MOD (TTL active, Flow offloading disabled)"
   restart_services
 }
@@ -48,9 +56,18 @@ nss() {
   uci set qmodem.'4_1'.pdp_type='ipv4v6'
   uci commit qmodem
 
+   # Set turboacc config
+  uci set turboacc.config.sw_flow='1'
+  uci set turboacc.config.hw_flow='1'
+  uci set turboacc.config.sfe_flow='1'
+  uci set turboacc.config.fullcone_nat='2'
+  uci set turboacc.config.bbr_cca='1'
+  uci commit turboacc >/dev/null 2>&1
+
   logger -t TTL64 "MODE: NSS (TTL removed, NSS enabled)"
   restart_services
 }
+
 
 vpn() {
   [ -f "$TTL_DISABLED" ] && mv "$TTL_DISABLED" "$TTL_FILE"
@@ -61,6 +78,14 @@ vpn() {
 
   uci set qmodem.'4_1'.pdp_type='ip'
   uci commit qmodem
+
+  # Set turboacc config
+  uci set turboacc.config.sw_flow='1'
+  uci set turboacc.config.hw_flow='1'
+  uci set turboacc.config.sfe_flow='1'
+  uci set turboacc.config.fullcone_nat='2'
+  uci set turboacc.config.bbr_cca='1'
+  uci commit turboacc >/dev/null 2>&1
 
 
   logger -t TTL64 "MODE: VPN (TTL active, NSS)"
