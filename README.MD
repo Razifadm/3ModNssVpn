@@ -20,6 +20,10 @@ wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Fw
 ```
 
 
+for Qwrt firmware in which don have ttl, please us link below.
+```
+wget -O /tmp/Install.sh https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Qwrt/Install.sh && chmod +x /tmp/Install.sh && sh /tmp/Install.sh
+```
 
 How To Remove/Uninstall
 ```
