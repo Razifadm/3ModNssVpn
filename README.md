@@ -1,11 +1,6 @@
 this branch for testing2 saja
 
-added ttl64.nft to main branch.
-this will pour sauces for mangling.
-usefull for data plan that need it.
-
-custom mod 
-
+xray
 
 How To Install
 ```
