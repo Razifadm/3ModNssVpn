@@ -13,10 +13,7 @@ function action_ttl64()
     local action = http.formvalue("action")
     local msg = nil
 
-    if action == "mod" then
-        sys.call("/usr/bin/modipv4.sh mod &")
-        msg = "Hotspot Mode applied."
-    elseif action == "nss" then
+    if action == "nss" then
         sys.call("/usr/bin/modipv4.sh nss &")
         msg = "NSS Mode applied."
     elseif action == "vpn" then
