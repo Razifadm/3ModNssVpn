@@ -1,19 +1,9 @@
-chain mangle_prerouting_ttl64 {
-  type filter hook prerouting priority 300; policy accept;
-  counter ip ttl set 64
-}
+chain mangle_forward {
+    type filter hook forward priority mangle; policy accept;
 
-chain mangle_postrouting_ttl64 {
-  type filter hook postrouting priority 300; policy accept;
-  counter ip ttl set 64
-}
+    # IPv4: set TTL only if not already 64
+    oifname "wwan0_1" ip ttl set 64
 
-chain mangle_prerouting_hoplimit64 {
-  type filter hook prerouting priority 300; policy accept;
-  counter ip6 hoplimit set 64
-}
-
-chain mangle_postrouting_hoplimit64 {
-  type filter hook postrouting priority 300; policy accept;
-  counter ip6 hoplimit set 64
+    # IPv6: set HopLimit only if not already 64
+    oifname "wwan0_1" ip6 hoplimit set 64
 }
