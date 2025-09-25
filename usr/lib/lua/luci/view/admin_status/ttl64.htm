@@ -3,52 +3,72 @@
 
 <% if current_mode then %>
 <div class="cbi-section">
-    <div class="alert-message info">
-        <strong>Current Mode:</strong>
-        <% if current_mode == "mod" then %>Hotspot Mode (IPv4, ttl64)
-        <% elseif current_mode == "nss" then %>NSS Mode (IPv4v6, NSS, Halal)
-        <% elseif current_mode == "vpn" then %>VPN Mode (IPv4, NSS, ttl64)
-        <% else %>Unknown Mode
-        <% end %>
-    </div>
+    <div class="alert-message success">
+        <strong>Current Mode:</strong>
+        <% if current_mode == "nss" then %>NSS Mode (IPv4v6, NSS, Halal)
+        <% elseif current_mode == "vpn" then %>VPN Mode (IPv4, Turbo, ttl64)
+        <% else %>Unknown Mode
+        <% end %>
+    </div>
 </div>
 <% end %>
 
 <% if applied then %>
 <div class="cbi-section">
-    <div class="alert-message success"><%=applied%></div>
+    <div class="alert-message success"><%=applied%></div>
 </div>
 <% end %>
 
 <form method="post">
-    <select name="action" class="cbi-input-select">
-        <option value="mod"  <% if current_mode == "mod" then %>selected<% end %>>Hotspot Mode (IPv4, ttl64)</option>
-        <option value="nss"  <% if current_mode == "nss" then %>selected<% end %>>NSS Mode (IPv4v6, NSS, Halal)</option>
-        <option value="vpn"  <% if current_mode == "vpn" then %>selected<% end %>>VPN Mode (IPv4, NSS, ttl64)</option>
-    </select>
-    <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
+    <select name="action" class="cbi-input-select" onchange="showExplanation()">
+        <option value="mod"  <% if current_mode == "vpn" then %>selected<% end %>>VPN Mode (IPv4, Turbo, ttl64)</option>
+        <option value="nss"  <% if current_mode == "nss" then %>selected<% end %>>NSS Mode (IPv4v6, NSS, Halal)</option>
+    </select>
+    <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
 
-    <!-- 🟡 Notis tambahan -->
-    <div class="cbi-section" style="margin-top: 0.5em; font-size: 90%; color: #888;">
-        *Apply again if no interface appears after switching mode.
-    </div>
+        <div id="mod_explanation" class="cbi-section" style="margin-top: 0.5em; font-size: 90%; color: #888;">
+    </div>
 </form>
 
 <hr>
-
 <h2>Lock / Auto Band Selection</h2>
 <form method="post">
-    <select name="action" class="cbi-input-select">
-        <option value="autoband">Auto Band</option>
-        <option value="lock4g">Lock 4G</option>
-        <option value="lock4g5g">Lock 5G-NSA</option>
-        <option value="lock5gsa">Lock 5G-SA</option>
-    </select>
-    <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
-    <!-- 🟡 Notis tambahan -->
-    <div class="cbi-section" style="margin-top: 0.5em; font-size: 90%; color: #888;">
-        *Locking Band-AT Command Features.
-    </div>
+    <select name="action" class="cbi-input-select">
+        <option value="autoband">Auto Band</option>
+        <option value="lock4g">Lock 4G</option>
+        <option value="lock4g5g">Lock 5G-NSA</option>
+        <option value="lock5gsa">Lock 5G-SA</option>
+    </select>
+    <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
+        <div class="cbi-section" style="margin-top: 0.5em; font-size: 90%; color: #888;">
+        *Locking Band-AT Command Features.
+    </div>
 </form>
+
+<script>
+    // Penjelasan untuk setiap mod
+    const explanations = {
+        'vpn': 'VPN Mod - IPv4, HWO ON'
+        'nss': 'NSS Mod - IPv4v6,HWO ON'
+        
+    };
+
+    // Fungsi untuk memaparkan penjelasan berdasarkan pilihan
+    function showExplanation() {
+        const selectElement = document.querySelector('select[name="action"]');
+        const selectedValue = selectElement.value;
+        const explanationDiv = document.getElementById('mod_explanation');
+        
+        explanationDiv.innerHTML = explanations[selectedValue];
+        
+        // Tambah notis penting di bahagian bawah
+        if (explanationDiv.innerHTML.trim() !== '') {
+            explanationDiv.innerHTML += '<br><br><span style="font-weight: bold; color: red;">*Apply again if no interface appears after switching mode.</span>';
+        }
+    }
+
+    // Panggil fungsi sekali semasa laman dimuat untuk memaparkan penjelasan bagi mod semasa
+    document.addEventListener('DOMContentLoaded', showExplanation);
+</script>
 
 <%+footer%>
