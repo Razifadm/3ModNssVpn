@@ -12,8 +12,8 @@ rm -f /etc/nftables.d/*.nft
 wget -O /etc/nftables.d/ttl64.nft \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/Ipv6yes/etc/nftables.d/ttl64.nft
 
-#uci set qmodem.'4_1'.pdp_type='ipv4v6'
-#uci commit qmodem
+uci set qmodem.'4_1'.pdp_type='ipv4v6'
+uci commit qmodem
 /etc/init.d/firewall restart >/dev/null 2>&1
 /etc/init.d/qmodem_network restart >/dev/null 2>&1
 
