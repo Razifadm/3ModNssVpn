@@ -57,6 +57,9 @@ echo "Qmodem set APN to ipv4v6"
 echo "Restarting services"
 /etc/init.d/firewall restart >/dev/null 2>&1
 /etc/init.d/qmodem_network restart >/dev/null 2>&1
+sleep 1
+/etc/init.d/qmodem_network restart >/dev/null 2>&1
+sleep 1
 
 echo "ipv6 TTL Installed completely!🎉"
 
