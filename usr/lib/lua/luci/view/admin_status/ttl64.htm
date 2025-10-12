@@ -6,7 +6,7 @@
     <div class="alert-message success">
         <strong>Current Mode:</strong>
         <% if current_mode == "nss" then %>NSS Mode (IPv4v6, NSS, Halal)
-        <% elseif current_mode == "vpn" then %>VPN Mode (IPv4, Turbo, ttl64)
+        <% elseif current_mode == "vpn" then %>VPN Mode (IPv4, ttl64)
         <% else %>Unknown Mode
         <% end %>
     </div>
@@ -21,8 +21,8 @@
 
 <form method="post">
     <select name="action" class="cbi-input-select" onchange="showExplanation()">
-        <option value="mod"  <% if current_mode == "vpn" then %>selected<% end %>>VPN Mode (IPv4, Turbo, ttl64)</option>
-        <option value="nss"  <% if current_mode == "nss" then %>selected<% end %>>NSS Mode (IPv4v6, NSS, Halal)</option>
+        <option value="nss"  <% if current_mode == "nss" then %>selected<% end %>>NSS Mode (IPv4v6)</option>
+        <option value="vpn"  <% if current_mode == "vpn" then %>selected<% end %>>VPN Mode (IPv4)</option>
     </select>
     <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
 
@@ -48,9 +48,8 @@
 <script>
     // Penjelasan untuk setiap mod
     const explanations = {
-        'vpn': 'VPN Mod - IPv4, HWO ON'
-        'nss': 'NSS Mod - IPv4v6,HWO ON'
-        
+        'nss': 'APN set to ipv4v6,HWO-On',
+        'vpn': 'APN set to ipv4,Best for VPN Orientated disable Ipv6'
     };
 
     // Fungsi untuk memaparkan penjelasan berdasarkan pilihan
