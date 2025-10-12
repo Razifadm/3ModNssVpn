@@ -8,6 +8,8 @@ restart_services() {
   sleep 8
   /etc/init.d/qmodem_network restart >/dev/null 2>&1
   sleep 1
+  /etc/init.d/qmodem_network restart >/dev/null 2>&1
+  sleep 1
 
   if ! ifstatus "$INTERFACE" | grep -q '"up": true'; then
     logger -t TTL64 "INFO: $INTERFACE not up, attempting ifup..."
