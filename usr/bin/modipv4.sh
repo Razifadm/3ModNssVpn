@@ -4,7 +4,6 @@ INTERFACE="qmodem_4_1"
 restart_services() {
   logger -t TTL64 "Restarting services..."
   /etc/init.d/firewall restart >/dev/null 2>&1
-  /etc/init.d/network restart >/dev/null 2>&1
   sleep 8
   /etc/init.d/qmodem_network restart >/dev/null 2>&1
   sleep 1
