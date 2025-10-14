@@ -16,6 +16,10 @@ https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/bin/modipv4.sh
 wget -O /usr/bin/modemtemp \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/usr/bin/modemtemp
 
+#Buang Rules nft sedia ada
+rm -f /etc/nftables.d/*.nft
+sleep 2
+
 # Download ttl64.nft
 wget -O /etc/nftables.d/ttl64.nft \
 https://raw.githubusercontent.com/Razifadm/3ModNssVpn/main/etc/nftables.d/ttl64.nft
