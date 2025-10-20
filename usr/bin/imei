@@ -1,0 +1,61 @@
+#!/bin/sh
+# Skrip untuk menukar nombor IMEI modem 4G/5G menggunakan arahan AT.
+
+# ===============================================
+# === Pengaturan Konfigurasi ===
+# ===============================================
+# Sila GANTIKAN dengan port/peranti bersiri modem anda yang sebenar.
+DEVICE="/dev/ttyUSB2"
+
+# ===============================================
+# === Fungsi Hantar AT Command (Menggunakan Echo) ===
+# ===============================================
+send_at() {
+    CMD="$1"
+    # Menghantar arahan AT dan menunggu respons selama 1 saat.
+    printf "Menghantar: %s\n" "$CMD"
+    echo -e "$CMD\r" > "$DEVICE"
+    sleep 1
+}
+
+# ===============================================
+# === PROSES UTAMA ===
+# ===============================================
+
+# AMBIL IMEI DARI ARGUMEN PERTAMA ($1) YANG DIHANTAR DARI LUCI
+NEW_IMEI="$1"
+
+echo "============================================="
+echo "⚙️  Skrip Penukaran IMEI Modem ⚙️"
+echo "============================================="
+
+# Semak jika input IMEI tidak kosong atau 15 digit
+# Nota: Pengesahan 15 digit yang lebih ketat dilakukan di Lua.
+if [ -z "$NEW_IMEI" ] || [ ${#NEW_IMEI} -ne 15 ]; then
+    echo "❌ Ralat: Nombor IMEI ($NEW_IMEI) tidak sah. Keluar."
+    exit 1
+fi
+
+# 2. Hantar Perintah Penukaran IMEI
+IMEI_CMD="AT+EGMR=1,7,\"$NEW_IMEI\""
+
+echo ""
+echo "🔥 Cuba menukar IMEI..."
+echo "Peranti sasaran: $DEVICE"
+
+# Pastikan peranti wujud
+if [ ! -c "$DEVICE" ]; then
+    echo "❌ Ralat: Port peranti $DEVICE tidak ditemui"
+    exit 1
+fi
+
+# Hantar arahan IMEI
+send_at "$IMEI_CMD"
+
+# 4. Semak IMEI Baru (Opsyenal)
+echo ""
+echo "🔍 Semak IMEI"
+send_at "AT+CGSN"
+
+echo "✅ IMEI Berjaya Ditukar kepada $NEW_IMEI"
+echo "============================================="
