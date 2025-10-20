@@ -70,4 +70,19 @@
     document.addEventListener('DOMContentLoaded', showExplanation);
 </script>
 
+<hr>
+<h2>Change WWAN IP</h2>
+<form method="post">
+    <input type="hidden" name="action" value="Change Wan ip">
+    
+    <div class="cbi-section">
+        <div class="cbi-value">
+           <label class="cbi-value-title">Click "Button below" to change WAN IP,If using passwall, this will auto reload</label>
+            
+            <div class="cbi-value-field">
+                <button type="submit" class="cbi-button cbi-button-apply">Change WWan IP & Reload VPN</button>
+            </div>
+        </div>
+    </div>
+</form>
 <%+footer%>
