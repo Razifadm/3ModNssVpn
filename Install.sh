@@ -49,9 +49,9 @@ echo "This system using qmodem, applying qmodem setting APN ipv4v6"
 # ===============================================
 
 # set pdp type to ipv4v6
-uci set qmodem.'4_1'.pdp_type='ipv4v6'
+uci set qmodem.'4_1'.pdp_type='ip'
 uci commit qmodem
-echo "Qmodem set APN to ipv4v6"
+echo "Qmodem set to ipv4 only"
 
 # Restart Services
 echo "Restarting services"
