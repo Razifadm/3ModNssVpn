@@ -24,44 +24,55 @@ function action_ttl64()
     local sys = require "luci.sys"
     local http = require "luci.http"
     local tpl = require "luci.template"
+    -- Komen/Buang baris yang menyebabkan ralat:
+    -- local msg = require "luci.msg" 
+    local uci = require "luci.model.uci".cursor()
 
     local action = http.formvalue("action")
-    local msg = nil
-
+    local redirect_url = luci.dispatcher.build_url("admin", "tools", "ttl64")
+    local success_msg = nil
+    
     if action == "nss" then
         sys.call("/usr/bin/modipv4.sh nss &")
-        msg = "NSS Mode applied."
+        success_msg = "NSS Mode applied."
     elseif action == "vpn" then
         sys.call("/usr/bin/modipv4.sh vpn &")
-        msg = "VPN Mode applied."
+        success_msg = "VPN Mode applied."
     elseif action == "autoband" then
         sys.call("/usr/bin/modemtemp AUTOBAND &")
-        msg = "Auto Band applied."
+        success_msg = "Auto Band applied."
     elseif action == "lock4g" then
         sys.call("/usr/bin/modemtemp LOCK4G &")
-        msg = "4G Lock applied."
+        success_msg = "4G Lock applied."
     elseif action == "lock4g5g" then
         sys.call("/usr/bin/modemtemp LOCK4G5G &")
-        msg = "4G+5G Lock applied."
+        success_msg = "4G+5G Lock applied."
     elseif action == "lock5gsa" then
         sys.call("/usr/bin/modemtemp LOCK5GSA &")
-        msg = "NR5G-SA Lock applied."
+        success_msg = "NR5G-SA Lock applied."
     
-    -- Blok Change Wan IP: Jalankan di latar belakang dan alihkan halaman
+    -- BLOK 'CHANGE WAN IP'
     elseif action == "Change Wan ip" then
-        -- Jalankan skrip di latar belakang dan buang output
-        sys.call("/usr/bin/wanip >/dev/null 2>&1 &") 
-        
-        -- Alihkan pengguna semula ke halaman ini dengan segera
-        http.redirect(http.getenv("HTTP_REFERER"))
-        return -- Hentikan fungsi di sini
+        sys.call("/usr/bin/wanip >/dev/null 2>&1") 
+        success_msg = "Wan ip renew"
+    end
+    
+    -- LAKSANAKAN REDIRECT SELEPAS TINDAKAN (PRG pattern)
+    if action and success_msg then
+        -- KOD BARU: Aliihkan dengan mesej kejayaan dalam URL
+        http.redirect(redirect_url .. "?applied=" .. http.urlencode(success_msg))
+        return
     end
 
-    -- Rendering halaman untuk semua tindakan lain
+    -- RENDERING LAMA (Untuk GET request)
     local current_mode = get_current_mode()
+    
+    -- DAPATKAN MESEJ KEJAYAAN DARI URL JIKA ADA
+    local applied_msg = http.formvalue("applied")
 
     tpl.render("admin_status/ttl64", {
-        applied = msg,
-        current_mode = current_mode
+        current_mode = current_mode,
+        applied = applied_msg -- Hantar mesej yang diambil dari URL
     })
 end
+
