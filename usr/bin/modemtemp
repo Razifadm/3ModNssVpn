@@ -20,6 +20,10 @@ VOLT_OUT=$(send_at "$VOLT_CMD")
 NUM_CMD="at+cnum"
 NUM_OUT=$(send_at "$NUM_CMD")
 
+#Dapatkan ISP/Operator
+ISP_CMD="at+qspn"
+ISP_OUT=$(send_at "$ISP_CMD")
+
 # === Fungsi AT command band lock ===
 case "$1" in
   AUTOBAND)
@@ -65,5 +69,15 @@ else
   [ -z "$OWN_NUM" ] && OWN_NUM="N/A"
 fi
 
+
+#---- Proses ISP-----
+if [ -z "$ISP_OUT" ]; then
+  ISP_ISP="N/A"
+else
+  # ISP
+  ISP_ISP=$(echo "$ISP_OUT" | awk -F\" '{print $2}' | tr -d '\r' | tr -d '\n')
+  [ -z "$ISP_ISP" ] && ISP_SIP="N/A"
+fi
+
 # === Output akhir ===
-echo "Temp: $TEMP°C / Voltage: $VOLT V / Number: $OWN_NUM"
+echo "Temp: $TEMP°C / Voltage: $VOLT V / Number: $OWN_NUM / ISP : $ISP_ISP"
