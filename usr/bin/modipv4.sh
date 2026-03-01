@@ -1,4 +1,7 @@
 #!/bin/sh
+TTL_FILE="/etc/nftables.d/ttl64.nft"
+TTL_DISABLED="/etc/nftables.d/ttl64.nft.disabled"
+TTL_TABLE="ttl64"
 INTERFACE="qmodem_4_1"
 
 restart_services() {
@@ -21,6 +24,9 @@ restart_services() {
 }
 
 nss() {
+  [ -f "$TTL_FILE" ] && mv "$TTL_FILE" "$TTL_DISABLED" && \
+  nft delete table inet "$TTL_TABLE" >/dev/null 2>&1
+
   uci set firewall.@defaults[0].flow_offloading='1'
   uci set firewall.@defaults[0].flow_offloading_hw='1'
   uci commit firewall >/dev/null 2>&1
@@ -33,6 +39,7 @@ nss() {
 }
 
 vpn() {
+  [ -f "$TTL_DISABLED" ] && mv "$TTL_DISABLED" "$TTL_FILE"
   uci set firewall.@defaults[0].flow_offloading='1'
   uci set firewall.@defaults[0].flow_offloading_hw='1'
   uci commit firewall >/dev/null 2>&1
