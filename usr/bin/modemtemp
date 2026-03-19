@@ -24,19 +24,21 @@ NUM_OUT=$(send_at "$NUM_CMD")
 ISP_CMD="at+qspn"
 ISP_OUT=$(send_at "$ISP_CMD")
 
-# === Fungsi AT command band lock ===
 case "$1" in
   AUTOBAND)
     send_at 'AT+QNWPREFCFG="mode_pref",AUTO'
+    send_at 'AT+QNWPREFCFG="nr5g_disable_mode",0'
     ;;
   LOCK4G)
     send_at 'AT+QNWPREFCFG="mode_pref",LTE'
     ;;
   LOCK4G5G)
     send_at 'AT+QNWPREFCFG="mode_pref",NR5G:LTE'
+    send_at 'AT+QNWPREFCFG="nr5g_disable_mode",1'
     ;;
   LOCK5GSA)
     send_at 'AT+QNWPREFCFG="mode_pref",NR5G'
+    send_at 'AT+QNWPREFCFG="nr5g_disable_mode",0'
     ;;
 esac
 
