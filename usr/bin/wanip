@@ -52,7 +52,7 @@ else
         echo "PassWall is not enabled. Skipping restart."
     fi
 fi
-
+/etc/init.d/qca-nss-drv start
 # Pastikan skrip keluar dengan kod 0 (berjaya)
 exit 0
 
