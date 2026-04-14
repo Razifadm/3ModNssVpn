@@ -1,11 +1,38 @@
+<%
+-- =========================
+-- GET CURRENT NETWORK MODE (sms_tool)
+-- =========================
+local handle = io.popen('sms_tool -d /dev/ttyUSB2 at \'AT+QNWPREFCFG="mode_pref"\' 2>/dev/null')
+local result = ""
+
+if handle then
+    result = handle:read("*all") or ""
+    handle:close()
+end
+
+-- Extract mode (AUTO / LTE / NR5G / LTE:NR5G)
+local raw_mode = result:match('mode_pref",([%w:]+)') or "UNKNOWN"
+
+-- Friendly display
+local display_mode = "Unknown"
+if raw_mode == "AUTO" then
+    display_mode = "Auto (4G/5G)"
+elseif raw_mode == "LTE" then
+    display_mode = "4G Only (LTE)"
+elseif raw_mode == "NR5G" then
+    display_mode = "5G Only (SA)"
+elseif raw_mode == "LTE:NR5G" then
+    display_mode = "4G + 5G (NSA)"
+end
+%>
+
 <%+header%>
+
 <style>
-/* Gaya untuk Animasi Sand Clock dan Overlay (Kekal) */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
 .sand-clock {
     display: inline-block;
     width: 30px;
@@ -17,7 +44,6 @@
     margin-right: 10px;
     vertical-align: middle;
 }
-
 #loading-overlay {
     display:none; 
     position:fixed; 
@@ -30,152 +56,127 @@
     text-align:center; 
     padding-top:15%;
 }
-
-.loading-step {
-    font-weight: bold;
-    color: #4CAF50;
-    margin-bottom: 5px;
-}
-
-.waiting-step {
-    color: #888;
-}
+.loading-step { font-weight: bold; color: #4CAF50; margin-bottom: 5px; }
+.waiting-step { color: #888; }
 </style>
 
 <div id="loading-overlay">
     <div style="font-size: 24px; font-weight: bold; color: #333;">
-        <span id="loading-spinner" class="sand-clock"></span> <span id="main-status">Loading... Please Wait.</span>
+        <span id="loading-spinner" class="sand-clock"></span> 
+        <span id="main-status">Loading... Please Wait.</span>
     </div>
-    
     <div style="width: 300px; margin: 20px auto; text-align: left; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;">
         <div id="status-log">
             <div id="step1" class="waiting-step">Loading..1: Switching off modem radio...</div>
             <div id="step2" class="waiting-step">Loading..2: Switching on modem radio...</div>
             <div id="step3" class="waiting-step">Loading..3: Restarting Passwall (if enabled)...</div>
         </div>
-        <strong style="color: red; margin-top: 15px; display: block; text-align: center;">*Do not close this page! The page will reload automatically.</strong>
+        <strong style="color: red; margin-top: 15px; display: block; text-align: center;">
+        *Do not close this page! The page will reload automatically.</strong>
     </div>
 </div>
+
 <h2>Choose Your Modem Mode</h2>
 
 <% if current_mode then %>
 <div class="cbi-section">
-    <div class="alert-message success">
-        <strong>Current Mode:</strong>
-        <% if current_mode == "nss" then %>NSS Mode (IPv4v6, NSS, Halal)
-        <% elseif current_mode == "vpn" then %>VPN Mode (IPv4, ttl64)
-        <% else %>Unknown Mode
-        <% end %>
-    </div>
+    <div class="alert-message success">
+        <strong>Current Mode:</strong>
+        <% if current_mode == "nss" then %>NSS Mode (IPv4v6, NSS)
+        <% elseif current_mode == "vpn" then %>VPN Mode (IPv4, ttl64)
+        <% else %>Unknown Mode
+        <% end %>
+    </div>
 </div>
 <% end %>
 
 <form method="post">
-    <select name="action" class="cbi-input-select" onchange="showExplanation()">
-        <option value="nss"  <% if current_mode == "nss" then %>selected<% end %>>NSS Mode (IPv4v6)</option>
-        <option value="vpn"  <% if current_mode == "vpn" then %>selected<% end %>>VPN Mode (IPv4)</option>
-    </select>
-    <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
+    <select name="action" class="cbi-input-select" onchange="showExplanation()">
+        <option value="nss"  <% if current_mode == "nss" then %>selected<% end %>>NSS Mode (IPv4v6)</option>
+        <option value="vpn"  <% if current_mode == "vpn" then %>selected<% end %>>VPN Mode (IPv4)</option>
+    </select>
+    <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
 
-        <div id="mod_explanation" class="cbi-section" style="margin-top: 0.5em; font-size: 90%; color: #888;">
-    </div>
+    <div id="mod_explanation" class="cbi-section" style="margin-top: 0.5em; font-size: 90%; color: #888;"></div>
 </form>
 
 <hr>
+
 <h2>Lock / Auto Band Selection</h2>
+
+<!-- ✅ CURRENT NETWORK DISPLAY -->
+<div class="cbi-section">
+    <div class="alert-message success">
+        <strong>Current Network:</strong> <%= display_mode %>
+        <br><small style="color:#888;">Raw: <%= raw_mode %></small>
+    </div>
+</div>
+
 <form method="post">
-    <select name="action" class="cbi-input-select">
-        <option value="autoband">Auto Band</option>
-        <option value="lock4g">Lock 4G</option>
-        <option value="lock4g5g">Lock 4G+5G NSA</option>
-        <option value="lock5gsa">Lock 5G-SA</option>
-    </select>
-    <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
-        <div class="cbi-section" style="margin-top: 0.5em; font-size: 90%; color: #888;">
-        *Locking Band-AT Command Features.
-    </div>
+    <select name="action" class="cbi-input-select">
+        <option value="autoband">Auto Band</option>
+        <option value="lock4g">Lock 4G</option>
+        <option value="lock4g5g">Lock 4G+5G NSA</option>
+        <option value="lock5gsa">Lock 5G-SA</option>
+    </select>
+    <button type="submit" class="cbi-button cbi-button-apply">Apply</button>
+    <div class="cbi-section" style="margin-top: 0.5em; font-size: 90%; color: #888;">
+        *Locking Band-AT Command Features.
+    </div>
 </form>
 
 <hr>
+
 <h2>Change WWAN IP</h2>
 <form method="post" id="change_ip_form"> 
     <input type="hidden" name="action" value="Change Wan ip">
     <div class="cbi-section">
         <div class="cbi-value">
-           <label class="cbi-value-title">Click "Change WWAN IP" to change WWAN IP,If using passwall wil reload the services</label>
+            <label class="cbi-value-title">
+            Click "Change WWAN IP" to change WWAN IP (Passwall will reload)</label>
             <div class="cbi-value-field">
-                <button type="submit" class="cbi-button cbi-button-apply" onclick="showLoading(event)">Change WWAN IP</button>
+                <button type="submit" class="cbi-button cbi-button-apply" onclick="showLoading(event)">
+                Change WWAN IP</button>
             </div>
         </div>
     </div>
 </form>
 
 <script>
-    // Fungsi showExplanation dikekalkan
-    const explanations = {
-        'nss': 'APN set to ipv4v6,HWO-On',
-        'vpn': 'APN set to ipv4,Best for VPN Orientated disable Ipv6'
-    };
-    function showExplanation() {
-        const selectElement = document.querySelector('select[name="action"]');
-        const selectedValue = selectElement.value;
-        const explanationDiv = document.getElementById('mod_explanation');
-        
-        explanationDiv.innerHTML = explanations[selectedValue];
-        
-        if (explanationDiv.innerHTML.trim() !== '') {
-            explanationDiv.innerHTML += '<br><br><span style="font-weight: bold; color: red;">*Apply again if no interface appears after switching mode.</span>';
-        }
-    }
+const explanations = {
+    'nss': 'APN set to ipv4v6,HWO-On',
+    'vpn': 'APN set to ipv4,Best for VPN disable IPv6'
+};
 
-    // FUNGSI UTAMA UNTUK LOADING ANIMASI DAN SIMULASI STATUS
-    function showLoading(event) {
-        // HANYA TAMATKAN PROSES JIKA BUTANG 'CHANGE WWAN IP' DITEKAN
-        if(event.target.form.id !== 'change_ip_form') return;
+function showExplanation() {
+    const selectElement = document.querySelector('select[name="action"]');
+    const selectedValue = selectElement.value;
+    const explanationDiv = document.getElementById('mod_explanation');
 
-        event.preventDefault(); 
-        
-        const overlay = document.getElementById('loading-overlay');
-        const form = document.getElementById('change_ip_form');
+    explanationDiv.innerHTML = explanations[selectedValue] || '';
+}
 
-        // Reset status
-        document.getElementById('step1').className = 'waiting-step';
-        document.getElementById('step2').className = 'waiting-step';
-        document.getElementById('step3').className = 'waiting-step';
-        document.getElementById('main-status').innerHTML = 'Loading... Please Wait.';
-        document.getElementById('loading-spinner').className = 'sand-clock';
+function showLoading(event) {
+    if(event.target.form.id !== 'change_ip_form') return;
 
-        // Paparkan overlay
-        overlay.style.display = 'block';
-        
-        // Simulasi pembaruan status
-        
-        // Status 1: Selesai Off Modem
-        setTimeout(() => { 
-            document.getElementById('step1').className = 'loading-step';
-        }, 500); 
+    event.preventDefault(); 
+    const overlay = document.getElementById('loading-overlay');
+    const form = document.getElementById('change_ip_form');
 
-        // Status 2: Selesai On Modem
-        setTimeout(() => { 
-            document.getElementById('step2').className = 'loading-step';
-        }, 3500); // 3 saat + 0.5s
+    overlay.style.display = 'block';
 
-        // Status 3: Selesai Restart Passwall
-        setTimeout(() => { 
-            document.getElementById('step3').className = 'loading-step';
-            document.getElementById('main-status').innerHTML = 'Wan ip renew **Done!**';
-            document.getElementById('loading-spinner').className = ''; // Hentikan animasi
-        }, 9500); 
-        
-        // Hantar borang secara sebenar
-        setTimeout(() => {
-             form.submit();
-        }, 100); 
-    }
+    setTimeout(() => { document.getElementById('step1').className = 'loading-step'; }, 500);
+    setTimeout(() => { document.getElementById('step2').className = 'loading-step'; }, 3500);
+    setTimeout(() => {
+        document.getElementById('step3').className = 'loading-step';
+        document.getElementById('main-status').innerHTML = 'Wan ip renew Done!';
+        document.getElementById('loading-spinner').className = '';
+    }, 9500);
 
-    // Panggil fungsi sekali semasa laman dimuat
-    document.addEventListener('DOMContentLoaded', showExplanation);
+    setTimeout(() => { form.submit(); }, 100);
+}
+
+document.addEventListener('DOMContentLoaded', showExplanation);
 </script>
 
 <%+footer%>
-
