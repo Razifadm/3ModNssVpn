@@ -28,6 +28,7 @@ case "$1" in
   AUTOBAND)
     send_at 'AT+QNWPREFCFG="mode_pref",AUTO'
     send_at 'AT+QNWPREFCFG="nr5g_disable_mode",0'
+    send_at 'AT+QNWLOCK="common/4g",0'
     ;;
   LOCK4G)
     send_at 'AT+QNWPREFCFG="mode_pref",LTE'
